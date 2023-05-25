@@ -5,6 +5,11 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Support\Str;
+
+use function GuzzleHttp\Promise\all;
 
 class TypeController extends Controller
 {
@@ -27,7 +32,7 @@ class TypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.types.create');
     }
 
     /**
@@ -38,7 +43,20 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $formData = $request->all();
+
+        $this->validation($formData);
+
+        $newType = new Type();
+
+        $formData['slug'] = Str::slug($formData['name'], '-');
+
+        $newType->fill($formData);
+
+        $newType->save();
+
+        return redirect()->route('admin.types.show', $newType);
     }
 
     /**
@@ -60,7 +78,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        //
+        return view('admin.types.edit', compact('type'));
     }
 
     /**
@@ -72,7 +90,15 @@ class TypeController extends Controller
      */
     public function update(Request $request, Type $type)
     {
-        //
+        $formData = $request->all();
+
+        $this->validation($formData);
+
+        $formData['slug'] = Str::slug($formData['name'], '-');
+
+        $type->update($formData);
+
+        return redirect()->route('admin.types.show', $type);
     }
 
     /**
@@ -83,6 +109,24 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        $type->delete();
+
+        return redirect()->route('admin.types.index');
+    }
+
+    private function validation($formData)
+    {
+        $validator = Validator::make($formData, [
+            'name' => 'max:100|required|unique:App\Models\Type,name',
+            'description' => 'required',
+        ], [
+            'name.max' => 'Il nome deve contenere massimo :max',
+            'name.required' => 'Il nome deve essere presente',
+            'name.unique' => 'Il nome è già presente',
+            'description.required' => 'Devi inserire la descrizione'
+
+        ])->validate();
+
+        return $validator;
     }
 }

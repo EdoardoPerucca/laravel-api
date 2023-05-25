@@ -29,6 +29,10 @@
                 @endforeach
             </tbody>
         </Table>
+
+        <div class="d-flex justify-content-center py-3">
+            <a href="{{route('admin.types.create')}}" class="btn btn-primary">Aggiungi una tipologia</a>
+        </div>
     
     </div>
 @endsection
