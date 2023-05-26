@@ -10,14 +10,23 @@
       <h1>{{$project->title}}</h1>
 
       <h6>Categoria: {{$project->type->name ?? 'nessuna'}}</h6>
-  
+
+      <hr>
+
+      <div class="card">
+        <div class="card-title p-3"><h3>Repo:</h3></div>
+        <div class="card-body">
+          <a href="{{$project->repo}}" target="_blank">Github</a>
+        </div>
+      </div>
+
       <hr>
   
       <p>{{$project->content}}</p>
       
   </div>
   
-  <div class="d-flex gap-5">
+  <div class="d-flex justify-content-around">
       <a href="{{route('admin.projects.edit', $project)}}" class="btn btn-primary">Modifica il progetto</a>
   
       <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +32,9 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -42,18 +45,22 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+
         $formData = $request->all();
 
         $this->validation($formData);
 
-        $project = new Project();
+        $newProject = new Project();
 
-        $project->fill($formData);
-        $project->slug = Str::slug($project->title, '-');
+        $newProject->fill($formData);
 
-        $project->save();
+        $newProject->slug = Str::slug($newProject->title, '-');
 
-        return redirect()->route('admin.projects.show', $project);
+        $newProject->technologies()->attach($formData['technologies']);
+
+        $newProject->save();
+
+        return redirect()->route('admin.projects.show', $newProject);
     }
 
     /**
@@ -76,8 +83,9 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
+        $technologies = Technology::all();
 
-        return view('admin.projects.edit', compact('project', 'types'));
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
 
@@ -96,7 +104,10 @@ class ProjectController extends Controller
         $this->validation($formData);
 
         $project->slug = str::slug($formData['title'], '-');
+
         $project->update($formData);
+
+        $project->technologies->sync($formData['tecnologies']);
 
         return redirect()->route('admin.projects.show', $project);
     }
@@ -118,14 +129,21 @@ class ProjectController extends Controller
     {
         $validator = Validator::make($formData, [
             'title' => 'required|max:255|min:3',
+            'repo' => 'required|max:255',
             'content' => 'required',
             'type_id' => 'nullable|exists:types,id',
+            'technologies' => 'exists:technologies,id'
         ], [
-            'title.max' => 'Il titolo deve avere massimo :max caratteri',
             'title.required' => 'Il titolo è richiesto',
+            'title.max' => 'Il titolo deve avere massimo :max caratteri',
             'title.max' => 'Il titolo deve avere minimo :min caratteri',
-            'content.required' => 'Il progetto deve avere il contenuto',
+            'repo.required' => 'Il link è richiesto',
+            'repo.max' => 'Il link deve avere massimo :max caratteri',
+            'content.required' => 'Il progetto deve avere la descrizione',
             'type_id.exists' => 'La tipologia deve essere presente nel sito',
+            'technologies.exists' => 'La tecnologia deve esistere nel nostro sito',
         ])->validate();
+
+        return $validator;
     }
 }

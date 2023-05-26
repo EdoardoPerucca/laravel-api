@@ -14,8 +14,27 @@
             @error('title')
                 <div class="invalid-feedback">
                     {{$message}}
-                </div>
-                
+                </div>     
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="repo">Repo</label>
+            <input type="text" name="repo" id="repo" class="form-control @error('repo') is-invalid @enderror" value="{{old('repo')}}">
+            @error('repo')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>     
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="content">Contenuto del progetto</label>
+            <textarea name="content" id="content" cols="30" rows="10" class="form-control @error('content') is-invalid @enderror">{{old('content')}}</textarea>
+            @error('content')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>          
             @enderror
         </div>
 
@@ -38,18 +57,25 @@
             @enderror
         </div>
 
-        <div class="mb-3">
-            <label for="content">Contenuto del progetto</label>
-            <textarea name="content" id="content" cols="30" rows="10" class="form-control @error('content') is-invalid @enderror">{{old('content')}}</textarea>
-            @error('content')
-                <div class="invalid-feedback">
-                    {{$message}}
-                </div>
-                
+        <div class="mb-3" form-group>
+            <h4>Tecnologie</h4>
+
+            <div class="form-check">
+                @foreach ($technologies as $technology)
+                    <input id="technology_{{$technology->id}}" name="technologies[]" type="checkbox" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>
+                    <label for="technology_{{$technology->id}}">{{$technology->name}}</label>   
+                @endforeach
+            </div>
+            @error('technologies')
+            <div class="text-danger">
+                {{$message}}
+            </div>
             @enderror
         </div>
 
-        <button class="btn btn-primary" type="submit">Aggiungi</button>
+        <button type="submit" class="btn btn-primary">
+            Aggiungi
+        </button>
     </form>
 </div>
     

@@ -17,12 +17,12 @@ class TechnologySeeder extends Seeder
     {
         $technologies = ['PHP', 'HTML', 'CSS', 'JS'];
 
-        foreach ($technologies as $singletecnology) {
-            $newTecnology = new Technology();
+        foreach ($technologies as $technology) {
+            $newTechnology = new Technology();
 
-            $newTecnology->name = $singletecnology;
+            $newTechnology->name = $technology;
 
-            $newTecnology->save();
+            $newTechnology->save();
         }
     }
 }

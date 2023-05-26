@@ -10,6 +10,7 @@
         <thead>
             <th>Titolo</th>
             <th>Contenuto</th>
+            <th>Repo</th>
             <th>Slug</th>
             <th>Tipologie</th>
     
@@ -19,9 +20,10 @@
     
             @foreach ($projects as $singleProject)
                 <tr>
-                    <td>{{$singleProject->title}}</td>
-                    <td>{{$singleProject->content}}</td>
-                    <td>{{$singleProject->slug}}</td>
+                    <td>{{substr($singleProject->title,0,20)."..."}}</td>
+                    <td>{{substr($singleProject->content,0,150)."..."}}</td>
+                    <td>{{$singleProject->repo}}</td>
+                    <td>{{substr($singleProject->slug,0,20)."..."}}</td>
                     <td>{{$singleProject->type?->name}}</td>
     
     
