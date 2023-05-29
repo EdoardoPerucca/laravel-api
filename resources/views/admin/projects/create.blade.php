@@ -57,21 +57,23 @@
             @enderror
         </div>
 
-        <div class="mb-3" form-group>
+        <div class="mb-3 form-group">
             <h4>Tecnologie</h4>
-
+      
             <div class="form-check">
-                @foreach ($technologies as $technology)
-                    <input id="technology_{{$technology->id}}" name="technologies[]" type="checkbox" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>
-                    <label for="technology_{{$technology->id}}">{{$technology->name}}</label>   
-                @endforeach
+              @foreach($technologies as $technology)
+                <input type="checkbox" id="technology-{{$technology->id}}" name="technologies[]" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>
+                <label for="technology-{{$technology->id}}">{{$technology->name}}</label>
+              @endforeach
             </div>
-            @error('technologies')
+            @error('technologies') 
             <div class="text-danger">
-                {{$message}}
+              {{$message}}
             </div>
+            
             @enderror
-        </div>
+      
+          </div>
 
         <button type="submit" class="btn btn-primary">
             Aggiungi

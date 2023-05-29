@@ -56,9 +56,14 @@ class ProjectController extends Controller
 
         $newProject->slug = Str::slug($newProject->title, '-');
 
-        $newProject->technologies()->attach($formData['technologies']);
-
         $newProject->save();
+
+        if (array_key_exists('technologies', $formData)) {
+
+            $newProject->technologies()->attach($formData['technologies']);
+        }
+
+
 
         return redirect()->route('admin.projects.show', $newProject);
     }
@@ -101,13 +106,22 @@ class ProjectController extends Controller
     {
         $formData = $request->all();
 
+        //dd($formData);
+
         $this->validation($formData);
 
-        $project->slug = str::slug($formData['title'], '-');
+        $project->slug = Str::slug($formData['title'], '-');
 
         $project->update($formData);
 
-        $project->technologies->sync($formData['tecnologies']);
+        if (array_key_exists('technologies', $formData)) {
+
+            $project->technologies()->sync($formData['technologies']);
+        } else {
+
+            $project->technologies()->detach();
+        }
+
 
         return redirect()->route('admin.projects.show', $project);
     }

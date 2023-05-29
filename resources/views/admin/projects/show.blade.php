@@ -7,9 +7,13 @@
 
   <div class="py-5">
     
-      <h1>{{$project->title}}</h1>
+        <h1>Progetto: {{$project->title}}</h1>
+        <h4>Tipologia: {{$project->type ? $project->type->name : 'nessuna'}}</h4>
+        <h5>Tecnologie: @foreach ($project->technologies as $technology)
+            {{$technology->name . ' '}}
+        @endforeach</h5>
 
-      <h6>Categoria: {{$project->type->name ?? 'nessuna'}}</h6>
+        <span class="badge rounded-pill bg-primary">Primary</span>
 
       <hr>
 
