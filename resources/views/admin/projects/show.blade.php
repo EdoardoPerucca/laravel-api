@@ -9,11 +9,11 @@
     
         <h1>Progetto: {{$project->title}}</h1>
         <h4>Tipologia: {{$project->type ? $project->type->name : 'nessuna'}}</h4>
-        <h5>Tecnologie: @foreach ($project->technologies as $technology)
-            {{$technology->name . ' '}}
-        @endforeach</h5>
+        <h5>Tecnologie: 
+          @foreach ($project->technologies as $technology)
+            <span class="badge rounded-pill bg-primary mx-1" style="background-color: {{$technology->color}}">{{$technology->name . ' '}}</span>
+          @endforeach</h5>
 
-        <span class="badge rounded-pill bg-primary">Primary</span>
 
       <hr>
 

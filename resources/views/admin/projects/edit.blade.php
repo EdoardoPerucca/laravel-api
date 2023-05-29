@@ -39,14 +39,28 @@
             @enderror
         </div>
 
+        <div class="mb-3">
+            <label for="repo">Repo</label>
+            <input type="text" name="repo" id="repo" class="form-control @error('repo') is-invalid @enderror" value="{{old('repo', $project->repo)}}">
+            @error('repo')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>     
+            @enderror
+        </div>
+
         <div class="mb-3 form-group">
             <h4>Tecnologie</h4>
-      
+            
+         
             @foreach($technologies as $technology)
             <div class="form-check">
+                
+                
                 @if($errors->any())
                   <input type="checkbox" id="technology-{{$technology->id}}" name="technologies[]" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>
-                @else
+                
+                  @else
                   <input type="checkbox" id="technology-{{$technology->id}}" name="technologies[]" value="{{$technology->id}}" @checked($project->technologies->contains($technology->id))>
                 @endif
       

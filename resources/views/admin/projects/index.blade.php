@@ -12,6 +12,7 @@
             <th>Contenuto</th>
             <th>Repo</th>
             <th>Slug</th>
+            <th>Tecnologie</th>
             <th>Tipologie</th>
     
         </thead>
@@ -24,6 +25,11 @@
                     <td>{{substr($singleProject->content,0,150)."..."}}</td>
                     <td>{{$singleProject->repo}}</td>
                     <td>{{substr($singleProject->slug,0,20)."..."}}</td>
+                    <td>
+                        @foreach ($singleProject->technologies as $technology)
+                        <span class="badge rounded-pill bg-primary mx-1" style="background-color: {{$technology->color}}">{{$technology->name . ' '}}</span>
+                        @endforeach    
+                    </td>
                     <td>{{$singleProject->type?->name}}</td>
     
     

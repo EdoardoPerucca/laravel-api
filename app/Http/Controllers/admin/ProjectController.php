@@ -106,10 +106,10 @@ class ProjectController extends Controller
     {
         $formData = $request->all();
 
-        //dd($formData);
 
         $this->validation($formData);
 
+        //dd($formData);
         $project->slug = Str::slug($formData['title'], '-');
 
         $project->update($formData);
