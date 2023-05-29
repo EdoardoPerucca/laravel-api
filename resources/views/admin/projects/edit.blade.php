@@ -5,7 +5,7 @@
 <h1>Modifica il Progetto</h1>
 
 <div class="container">
-    <form action="{{route('admin.projects.update', $project)}}" method="POST">
+    <form action="{{route('admin.projects.update', $project)}}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -51,30 +51,36 @@
 
         <div class="mb-3 form-group">
             <h4>Tecnologie</h4>
-            
-         
+               
             @foreach($technologies as $technology)
-            <div class="form-check">
-                
-                
-                @if($errors->any())
-                  <input type="checkbox" id="technology-{{$technology->id}}" name="technologies[]" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>
-                
-                  @else
-                  <input type="checkbox" id="technology-{{$technology->id}}" name="technologies[]" value="{{$technology->id}}" @checked($project->technologies->contains($technology->id))>
-                @endif
-      
-                <label for="technology-{{$technology->id}}">{{$technology->name}}</label>
-            </div>
+                <div class="form-check">
+                                
+                    @if($errors->any())
+                    <input type="checkbox" id="technology-{{$technology->id}}" name="technologies[]" value="{{$technology->id}}" @checked(in_array($technology->id, old('technologies', [])))>               
+                    @else
+                    <input type="checkbox" id="technology-{{$technology->id}}" name="technologies[]" value="{{$technology->id}}" @checked($project->technologies->contains($technology->id))>
+                    @endif
+        
+                    <label for="technology-{{$technology->id}}">{{$technology->name}}</label>
+                </div>
             @endforeach
 
             @error('technologies') 
               <div class="text-danger">
                 {{$message}}
               </div>
-            @enderror
-      
+            @enderror      
           </div>
+
+          <div class="mb-3">
+            <label for="cover_image" class="form-label">Immagine</label>
+            <input class="form-control @error('cover_image') is-invalid @enderror" type="file" id="cover_image" name="cover_image">
+            @error('cover_image')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>
+            @enderror
+        </div>
 
         <div class="mb-3">
             <label for="content">Contenuto del progetto</label>

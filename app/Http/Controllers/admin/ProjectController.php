@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Str;
@@ -49,6 +50,14 @@ class ProjectController extends Controller
         $formData = $request->all();
 
         $this->validation($formData);
+
+        if ($request->hasFile('cover_image')) {
+
+            $path = Storage::put('project_images', $request->cover_image);
+
+            $formData['cover_image'] = $path;
+        }
+        //dd($formData);
 
         $newProject = new Project();
 
@@ -109,6 +118,17 @@ class ProjectController extends Controller
 
         $this->validation($formData);
 
+        if ($request->hasFile('cover_image')) {
+
+            if ($project->cover_image) {
+                Storage::delete($project->cover_image);
+            }
+
+            $path = Storage::put('project_images', $request->cover_image);
+
+            $formData['cover_image'] = $path;
+        }
+
         //dd($formData);
         $project->slug = Str::slug($formData['title'], '-');
 
@@ -134,6 +154,10 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->cover_image) {
+            Storage::delete($project->cover_image);
+        }
+
         $project->delete();
 
         return redirect()->route('admin.projects.index');
@@ -146,7 +170,8 @@ class ProjectController extends Controller
             'repo' => 'required|max:255',
             'content' => 'required',
             'type_id' => 'nullable|exists:types,id',
-            'technologies' => 'exists:technologies,id'
+            'technologies' => 'exists:technologies,id',
+            'cover_image' => 'nullable|image|max:4000',
         ], [
             'title.required' => 'Il titolo è richiesto',
             'title.max' => 'Il titolo deve avere massimo :max caratteri',
@@ -156,6 +181,9 @@ class ProjectController extends Controller
             'content.required' => 'Il progetto deve avere la descrizione',
             'type_id.exists' => 'La tipologia deve essere presente nel sito',
             'technologies.exists' => 'La tecnologia deve esistere nel nostro sito',
+            'cover_image.image' => 'Il file deve essere formato immagine',
+            'cover_image.max' => 'Il file non deve eccedere i 2 MB',
+
         ])->validate();
 
         return $validator;

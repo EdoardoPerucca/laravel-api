@@ -5,7 +5,7 @@
 <h1>Crea un progetto</h1>
 
 <div class="container">
-    <form action="{{route('admin.projects.store')}}" method="POST">
+    <form action="{{route('admin.projects.store')}}" method="POST" enctype="multipart/form-data">
     @csrf
 
         <div class="mb-3">
@@ -25,16 +25,6 @@
                 <div class="invalid-feedback">
                     {{$message}}
                 </div>     
-            @enderror
-        </div>
-
-        <div class="mb-3">
-            <label for="content">Contenuto del progetto</label>
-            <textarea name="content" id="content" cols="30" rows="10" class="form-control @error('content') is-invalid @enderror">{{old('content')}}</textarea>
-            @error('content')
-                <div class="invalid-feedback">
-                    {{$message}}
-                </div>          
             @enderror
         </div>
 
@@ -73,7 +63,27 @@
             
             @enderror
       
-          </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="cover_image" class="form-label">Immagine</label>
+            <input class="form-control @error('cover_image') is-invalid @enderror" type="file" id="cover_image" name="cover_image">
+            @error('cover_image')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="content">Contenuto del progetto</label>
+            <textarea name="content" id="content" cols="30" rows="10" class="form-control @error('content') is-invalid @enderror">{{old('content')}}</textarea>
+            @error('content')
+                <div class="invalid-feedback">
+                    {{$message}}
+                </div>          
+            @enderror
+        </div>
 
         <button type="submit" class="btn btn-primary">
             Aggiungi

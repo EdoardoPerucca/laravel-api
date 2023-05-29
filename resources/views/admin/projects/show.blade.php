@@ -3,6 +3,9 @@
 @section('content')
 
 <div class="container">
+  <div class="text-center">
+    <img class="w-25" src="{{asset('storage/' . $project->cover_image)}}" alt="">
+  </div>
 
 
   <div class="py-5">
