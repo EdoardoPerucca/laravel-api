@@ -130,7 +130,7 @@ class ProjectController extends Controller
         }
 
         //dd($formData);
-        //$project->slug = Str::slug($formData['title'], '-');
+        $project->slug = Str::slug($formData['title'], '-');
 
         $project->update($formData);
 

@@ -39,7 +39,7 @@
 
                 </select>
 
-            @error('content')
+            @error('type_id')
             <div class="invalid-feedback">
                 {{$message}}
             </div>
