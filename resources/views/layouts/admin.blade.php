@@ -1,6 +1,7 @@
 @php
     
 $routeName = Route::currentRouteName();
+
 function routeNameContains($string) {
     return str_contains( Route::currentRouteName(), $string);
 }
@@ -114,7 +115,7 @@ function routeNameContains($string) {
             </div>
             <div class="list-group list-group-flush">
                 <a href="{{route('admin.projects.index')}}" class="list-group-item list-group-item-action {{routeNameContains('projects.index') ? 'active' : ''}}">Tutti i progetti</a>
-                <a href="{{route('admin.projects.create')}}" class="list-group-item list-group-item-action {{routeNameContains('projects.create') ? 'active' : ''}}">Aggiungi un progetti</a>
+                <a href="{{route('admin.projects.create')}}" class="list-group-item list-group-item-action {{routeNameContains('projects.create') ? 'active' : ''}}">Aggiungi un progetto</a>
             </div>
         </div>
         
