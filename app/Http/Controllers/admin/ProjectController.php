@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,6 +23,9 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::all();
+        //$user_id = Auth::id();
+
+        //$projects = Project::where('user_id', $user_id)->get();
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -63,6 +67,8 @@ class ProjectController extends Controller
 
         $newProject->fill($formData);
 
+        $newProject->user_id = Auth::id();
+
         $newProject->slug = Str::slug($newProject->title, '-');
 
         $newProject->save();
@@ -85,7 +91,13 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('admin/projects/show', compact('project'));
+        if ($project->user_id == Auth::id()) {
+
+            return view('admin/projects/show', compact('project'));
+        } else {
+
+            return redirect()->route('admin.projects.index');
+        }
     }
 
     /**
@@ -96,6 +108,10 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        if ($project->user_id != Auth::id()) {
+            return redirect()->route('admin.projects.index');
+        }
+
         $types = Type::all();
         $technologies = Technology::all();
 

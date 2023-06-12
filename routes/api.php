@@ -19,6 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('test', function () {
+    return response()->json([
+        'name' => 'Edoardo',
+        'city' => 'Pavia'
+    ]);
+});
+
 Route::get('projects', [ProjectController::class, 'index']);
 
 Route::get('/projects/{slug}', [ProjectController::class, 'show']);

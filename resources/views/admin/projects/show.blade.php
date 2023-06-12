@@ -11,6 +11,7 @@
   <div class="py-5">
     
         <h1>Progetto: {{$project->title}}</h1>
+        <h3>Utente: {{$project->user->name}}</h3>
         <h4>Tipologia: {{$project->type ? $project->type->name : 'nessuna'}}</h4>
         <h5>Tecnologie: 
           @foreach ($project->technologies as $technology)
